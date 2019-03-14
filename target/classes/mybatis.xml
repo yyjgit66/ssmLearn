@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+   <!-- 为实体类制定别名 -->
+	<typeAliases>
+		<package  name="com.mrwang.beans.Product" />
+		<package  name="com.mrwang.beans.ProductVo" />
+	</typeAliases>
+	<!-- 注册映射文件 -->
+	<mappers>
+		<package name="com.mrwang.dao.ProductDao" />
+	</mappers>
+</configuration>

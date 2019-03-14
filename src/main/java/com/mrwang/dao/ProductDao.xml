@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrwang.dao.ProductDao">
+	 <resultMap type="com.mrwang.beans.Product" id="productResult">
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productCreateDate" column="product_createDate"/>
+        <result property="productUpdateDate" column="product_updateDate"/>
+        <result property="productImagePath" column="product_imagePath"/>
+        <result property="productDetailsId" column="product_detailsId"/>
+    </resultMap>
+    
+     <resultMap type="com.mrwang.beans.Details" id="detailsResult">
+        <result property="detailsId" column="details_id"/>
+        <result property="detailsName" column="details_name"/>
+        <result property="detailsCreateDate" column="details_createDate"/>
+        <result property="detailsUpdateDate" column="details_updateDate"/>
+        <result property="detailsPrice" column="details_price"/>
+        <result property="detailsDescribe" column="details_describe"/> 
+        <result property="inventory" column="inventory"/>
+        <result property="picturesShowFive" column="pictures_show_five"/>
+        <result property="picturesShowfour" column="pictures_show_four"/>
+        <result property="picturesShowThree" column="pictures_show_three"/>
+        <result property="picturesShowTwo" column="pictures_show_two"/>
+        <result property="picturesShowOne" column="pictures_show_one"/> 
+        <result property="imgsId" column="imgs_id"/>
+    </resultMap>
+    
+    
+     <resultMap type="com.mrwang.beans.ProductDetails" id="PdResult">
+        <result property="pdId" column="pd_id"/>
+        <result property="pdImgOne" column="pd_img_one"/>
+        <result property="pdImgTwo" column="pd_img_two"/>
+        <result property="pdImgThree" column="pd_img_three"/>
+        <result property="pdImgFour" column="pd_img_four"/>
+    </resultMap>
+	<select id="selectProduct" parameterType="com.mrwang.beans.ProductVo"   resultMap="productResult">
+			 select product_id,product_name,product_createDate,product_updateDate,product_imagePath,
+			  product_detailsId from product  limit #{start},#{rows};
+	</select>
+	
+	<select id="selectCountProduct"  resultType="int">
+	
+			 select  count(0) cont from product;
+	</select>
+	
+	<select id="selectDetils" parameterType="java.lang.String" resultMap="detailsResult">
+			select details_id,details_name,details_createDate,details_updateDate,details_price,details_describe,
+			inventory,pictures_show_five,pictures_show_four,pictures_show_three,pictures_show_two,pictures_show_one,imgs_id from details where details_id=#{productDetailsId};
+	</select>
+	
+	<select id="selectProductDetils" parameterType="int" resultMap="PdResult">
+			 select pd_id,pd_img_one,pd_img_two,pd_img_three,pd_img_four from product_details where pd_id=#{imgId}; 
+	</select>
+	
+	<insert id="addShoppingCart" parameterType="java.lang.String" > 
+		  insert into  shpping_cart (cart_createDate,details_id,user_id,number) values(curdate(),#{detailsId},'',1) on DUPLICATE key update number=number+1;
+	</insert>
+	
+	<select id="selectCartCount" resultType="int">
+	 select  ifnull(sum(number),0) from shpping_cart
+	</select>
+</mapper>
